@@ -102,6 +102,12 @@ export default function App() {
   const handlePasswordSubmit = (e?: FormEvent) => {
     e?.preventDefault();
     if (selectedUser && passwordInput === selectedUser.password) {
+      // Save authenticated state to localStorage
+      const verified = JSON.parse(localStorage.getItem('portal_verified_users') || '[]');
+      if (!verified.includes(selectedUser.id)) {
+        localStorage.setItem('portal_verified_users', JSON.stringify([...verified, selectedUser.id]));
+      }
+
       setActiveViewUser(selectedUser);
       setSelectedUser(null);
       setPasswordInput('');
@@ -109,6 +115,15 @@ export default function App() {
     } else {
       setError(true);
       setTimeout(() => setError(false), 2000);
+    }
+  };
+
+  const handleUserClick = (user: PortalUser) => {
+    const verified = JSON.parse(localStorage.getItem('portal_verified_users') || '[]');
+    if (verified.includes(user.id)) {
+      setActiveViewUser(user);
+    } else {
+      setSelectedUser(user);
     }
   };
 
@@ -226,7 +241,7 @@ export default function App() {
               transition={{ delay: index * 0.05 + 0.4 }}
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setSelectedUser(user)}
+              onClick={() => handleUserClick(user)}
               className="group relative overflow-hidden rounded-3xl bg-slate-900/40 backdrop-blur-sm border border-slate-800 p-8 text-left transition-all hover:border-blue-500/50 hover:bg-slate-900/60"
             >
               <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${user.color} opacity-10 blur-3xl group-hover:opacity-20 transition-opacity`} />

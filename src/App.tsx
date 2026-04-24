@@ -244,7 +244,7 @@ export default function App() {
                 {user.name}
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed mb-6">
-                Access estimation worksheets for {user.name}'s department.
+                Access estimation worksheets for {user.name}'s Jobs Missing Item List.
               </p>
 
               <div className="flex items-center text-blue-400 text-sm font-bold gap-2">
